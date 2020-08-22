@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:projectazo/networking/api.dart';
 import 'package:projectazo/ui/designList.dart';
+import 'package:projectazo/models/designer.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,7 +13,6 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController usernameController = new TextEditingController();
   final TextEditingController passwordController = new TextEditingController();
   Api _api = Api();
-
   Widget loginForm() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -47,7 +47,6 @@ class _LoginPageState extends State<LoginPage> {
                     icon:
                     Icon(Icons.email, size: 32.0, color: Colors.blue[800]),
                   ),
-                  //onSaved: (text) => _correo = text,
                 ),
                 TextFormField(
                   controller: passwordController,
@@ -73,18 +72,13 @@ class _LoginPageState extends State<LoginPage> {
                         _api.login(
                           usernameController.text,
                           passwordController.text
-                        ).then((responseCode){
-                          if (responseCode == 200){
+                        ).then((designer){
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => DesignListPage(),
+                                builder: (_) => DesignListPage(designerUser: designer),
                               ),
                             );
-                          }
-                          else{
-                            print("Not loged");
-                          }
                         });
                     }
                   },

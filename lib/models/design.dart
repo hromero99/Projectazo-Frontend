@@ -1,24 +1,26 @@
+import '../models/designer.dart';
+import '../networking/designer.dart';
 
 class Design{
   //int id;
-  //Designer Author;
-  int Author;
+  //int Author;
+  Designer author;
   String Description;
   String file;
 
   Map toJson(){
     return {
-      'author': this.Author,
+      'author': this.author,
       'description': this.Description,
       'file': this.file,
     };
   }
   factory Design.fromJson(Map<String, dynamic> json){
     return Design(
-      Author: json['author'],
+      author: json['author'],
       Description: json['description'],
       file: json['file'],
-      );
+    );
   }
-  Design({this.Author, this.Description, this.file});
+  Design({this.author, this.Description, this.file});
 }
