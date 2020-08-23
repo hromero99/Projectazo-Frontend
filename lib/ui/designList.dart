@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:projectazo/models/design.dart';
 import 'package:projectazo/models/designer.dart';
+import 'package:projectazo/networking/designer.dart';
 import 'package:projectazo/networking/designs.dart';
-import 'dart:async';
 import 'package:projectazo/ui/addDesign.dart';
 import 'package:projectazo/util/url.dart';
 import 'package:projectazo/ui/profile.dart';
@@ -24,34 +24,65 @@ class _DesignListPageState extends State<DesignListPage> {
   void initState(){
     super.initState();
   }
+  Designer _designer = Designer();
 
+  void _assignDesigner(int DesignerID) async{
+    _designer = await DesignerRepository().get(DesignerID);
+  }
   ListView _designsList(data) {
     return ListView.builder(
         itemCount: data.length,
         itemBuilder: (context, index) {
-
           return Container(
+            decoration: BoxDecoration(
+                border: Border.all(width: 0.25, color: Colors.white),
+            ),
+            margin: const EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 // This container is used to show the profile picture and the username
                 Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 0.15, color: Colors.grey)
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.only(right: 10),
-                        child: CircleAvatar(backgroundImage: data[index].author.profilePicture),
+                        width: 30,
+                        height: 30,
+                        margin: EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: data[index].author.profilePicture,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                              _assignDesigner(data[index].author.id);
+                              return ProfilePage(designer: _designer);
+                            }));
+                          }
+                        ),
                       ),
-                      Text(data[index].author.username,)
+                      Text(data[index].author.username),
+                      IconButton(
+                        icon: Icon(Icons.share),
+                        onPressed: () {},
+                      )
                     ],
                   ),
                 ),
+
                 //Space between user information and post
                 Container(
                   constraints: BoxConstraints.expand(height: 1),
                 ),
                 Container(
+                  margin: const EdgeInsets.all(10),
                   constraints: BoxConstraints(
                       maxHeight: 282
                   ),
@@ -97,7 +128,7 @@ class _DesignListPageState extends State<DesignListPage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => ProfilePicture(designer: this.widget.designerUser),
+                  builder: (_) => ProfilePage(designer: this.widget.designerUser),
                 ),
               );
             },
@@ -114,7 +145,7 @@ class _DesignListPageState extends State<DesignListPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => CreateDesignPage(),
+              builder: (_) => CreateDesignPage(designer: this.widget.designerUser,),
             ),
           );
         },
