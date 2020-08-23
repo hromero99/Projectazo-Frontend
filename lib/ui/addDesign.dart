@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:projectazo/models/design.dart';
 import '../networking/designs.dart';
+import 'package:projectazo/models/designer.dart';
 
 
 Widget setImageView(File imageFile) {
@@ -32,6 +30,8 @@ Widget setImageView(File imageFile) {
 }
 
 class CreateDesignPage extends StatefulWidget {
+  final Designer designer;
+  CreateDesignPage ({Key key, @required this.designer }): super(key: key);
   @override
   _CreateDesignPageState createState() => _CreateDesignPageState();
 }
@@ -54,7 +54,7 @@ class _CreateDesignPageState extends State<CreateDesignPage> {
     });
 
   }
-
+  final _descriptionController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -73,6 +73,7 @@ class _CreateDesignPageState extends State<CreateDesignPage> {
               SizedBox(height: 10),
               ListTile(
                 title: TextField(
+                  controller: _descriptionController,
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
@@ -83,7 +84,7 @@ class _CreateDesignPageState extends State<CreateDesignPage> {
               Padding(
                 child: RaisedButton(
                   onPressed: (){
-                    print(DesignRepository().createDesign(_image));
+                    print(_designRepository.createDesign(_image,this.widget.designer,_descriptionController.text));
                     //DesignRepository().createDesign(_image);
                   },
                   child: Text("Create Design"),
