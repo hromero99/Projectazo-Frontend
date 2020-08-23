@@ -9,12 +9,12 @@ import 'api.dart';
 
 class DesignRepository{
 
-  Future<int> createDesign(File image) async{
+  Future<int> createDesign(File image, Designer user, String description) async{
     var token = await  Api().storage.read(key: "token");
     var req = http.MultipartRequest('POST', Uri.parse(Url.designsUrl));
     print(Url.designsUrl);
-    req.fields['author'] = "1";
-    req.fields["description"] = "asd";
+    req.fields['author'] = user.id.toString();
+    req.fields["description"] = description;
     req.headers.addAll({
       "Content-Type": "image/jpeg",
       "Authorization": "Token " + token,
