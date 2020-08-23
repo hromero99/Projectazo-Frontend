@@ -62,4 +62,24 @@ class DesignRepository{
       throw("Error getting design data");
     }
   }
+
+
+  Future<List<Design>> getUserDesigns(String username) async{
+    var request = await http.get(Url.designsUrl + username);
+    print(Url.designsUrl + username);
+    if (request.statusCode == 200) {
+      Iterable rawDesignsList = json.decode(request.body);
+      List <Design> designs = [];
+      for (var rawDesign in rawDesignsList){
+        Designer author = await DesignerRepository().get(rawDesign['author']);
+        rawDesign['author'] = author;
+        rawDesign['file'] = Url().getImageLink(rawDesign['file']);
+        designs.add(Design.fromJson(rawDesign));
+      }
+      return designs;
+    }
+    else{
+      throw(request.statusCode);
+    }
+  }
 }
