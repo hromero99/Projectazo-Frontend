@@ -6,7 +6,7 @@ import 'package:projectazo/networking/designs.dart';
 import 'dart:async';
 import 'package:projectazo/ui/addDesign.dart';
 import 'package:projectazo/util/url.dart';
-
+import 'package:projectazo/ui/profile.dart';
 
 // Widget for the list of all designs loaded in user profile
 class DesignListPage extends StatefulWidget {
@@ -93,7 +93,14 @@ class _DesignListPageState extends State<DesignListPage> {
         leading:Padding(
           padding: const EdgeInsets.all(8.0),
           child: GestureDetector(
-            onTap: (){},
+            onTap: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ProfilePicture(designer: this.widget.designerUser),
+                ),
+              );
+            },
             child: CircleAvatar(
             radius: 20,
             backgroundImage: this.widget.designerUser.profilePicture,
