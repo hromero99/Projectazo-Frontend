@@ -5,14 +5,14 @@ import 'package:projectazo/util/url.dart';
 import 'package:projectazo/networking/designs.dart';
 
 
-class ProfilePicture extends StatefulWidget {
-  Designer designer;
-  ProfilePicture ({Key key, @required this.designer }): super(key: key);
+class ProfilePage extends StatefulWidget {
+  final Designer designer;
+  ProfilePage ({Key key, @required this.designer }): super(key: key);
   @override
-  _ProfilePictureState createState() => _ProfilePictureState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfilePictureState extends State<ProfilePicture> {
+class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
